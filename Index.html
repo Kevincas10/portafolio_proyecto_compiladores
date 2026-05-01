@@ -3,318 +3,1091 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio - Compilador Pedidos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>Portafolio - Compilador Gestor de Pedidos</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg-dark: #0a0f18;
-            --bg-card: rgba(17, 25, 40, 0.75);
-            --border-card: rgba(255, 255, 255, 0.125);
-            --primary: #0ce3e8;
-            --primary-glow: rgba(12, 227, 232, 0.4);
-            --secondary: #99cbff;
-            --accent: #c9a0ff;
-            --text-main: #ddeeff;
-            --text-muted: #8ba3ba;
-            --token-keyword: #c9a0ff;
-            --token-string: #ff8fab;
-            --token-number: #38bdf8;
-            --token-id: #99cbff;
-            --token-symbol: #67e8f9;
+            --bg-main: #f4f7fb;
+            --bg-soft: #eef3f8;
+            --bg-card: #ffffff;
+            --bg-dark: #172033;
+
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #0f766e;
+            --accent: #f97316;
+
+            --success: #16a34a;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --info: #0284c7;
+
+            --text-main: #172033;
+            --text-muted: #64748b;
+            --border: #dbe3ef;
+
+            --shadow: 0 15px 35px rgba(15, 23, 42, 0.10);
+
+            --token-keyword: #2563eb;
+            --token-string: #16a34a;
+            --token-number: #f97316;
+            --token-id: #0f766e;
+            --token-symbol: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
             margin: 0;
             padding: 0;
-            background-color: var(--bg-dark);
+            background:
+                radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(249, 115, 22, 0.10), transparent 30%),
+                var(--bg-main);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(12, 227, 232, 0.05), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(201, 160, 255, 0.05), transparent 25%);
-            background-attachment: fixed;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* Nav */
+        img,
+        video,
+        iframe {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* NAV */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 20px 0;
-            background: rgba(10, 15, 24, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-card);
-            z-index: 100;
-            display: flex;
-            justify-content: center;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
         }
-        nav ul {
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            font-size: 1.6rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .menu-toggle:active {
+            transform: scale(0.96);
+        }
+
+        .nav-menu {
             list-style: none;
             display: flex;
-            gap: 30px;
+            gap: 14px;
             margin: 0;
             padding: 0;
+            align-items: center;
         }
-        nav a {
-            color: var(--text-main);
+
+        .nav-menu li {
+            margin: 0;
+        }
+
+        .nav-menu a {
+            color: var(--text-muted);
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: color 0.3s;
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            padding: 8px 10px;
+            border-radius: 10px;
         }
-        nav a:hover {
+
+        .nav-menu a:hover {
+            color: var(--primary);
+            background: rgba(37, 99, 235, 0.08);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 110px 22px 50px;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 70px 0 40px;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 35px;
+            align-items: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.4rem, 6vw, 5rem);
+            line-height: 1.05;
+            margin: 0;
+            color: var(--text-main);
+            letter-spacing: -2px;
+        }
+
+        .hero-text h1 span {
             color: var(--primary);
         }
 
-        /* Container */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 100px 20px 50px;
+        .hero-text h2 {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            max-width: 680px;
+            margin: 20px 0 0;
         }
 
-        /* Hero */
-        .hero {
-            text-align: center;
-            padding: 100px 0;
-            animation: fadeIn 1.5s ease-out;
-        }
-        .hero h1 {
-            font-size: 4rem;
-            margin: 0;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 40px var(--primary-glow);
-        }
-        .hero h2 {
-            font-size: 1.5rem;
-            color: var(--secondary);
-            font-weight: 400;
-            margin-top: 10px;
-        }
-        .metadata {
+        .hero-actions {
             display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 40px;
+            gap: 14px;
             flex-wrap: wrap;
+            margin-top: 30px;
         }
-        .meta-item {
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 14px;
+            padding: 13px 18px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 12px 25px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-secondary {
+            color: var(--primary-dark);
+            background: white;
+            border: 1px solid var(--border);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .dashboard-preview {
             background: var(--bg-card);
-            border: 1px solid var(--border-card);
-            padding: 15px 25px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s;
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            max-width: 100%;
         }
-        .meta-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
+
+        .dashboard-preview::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(249, 115, 22, 0.08));
+            pointer-events: none;
         }
-        .meta-item span {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
+
+        .preview-header {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
-        .meta-item strong {
-            font-size: 1.1rem;
+
+        .preview-title {
+            font-weight: 800;
             color: var(--text-main);
         }
 
-        /* Sections */
-        section {
-            margin: 80px 0;
-            padding: 40px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-card);
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(22, 163, 74, 0.12);
+            color: var(--success);
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        .mini-grid {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .mini-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 16px;
+            max-width: 100%;
+        }
+
+        .mini-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .mini-card span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .mini-card strong {
+            font-size: 1.4rem;
+            color: var(--text-main);
+        }
+
+        .route-card {
+            position: relative;
+            margin-top: 14px;
+            background: var(--bg-dark);
+            color: white;
             border-radius: 20px;
-            backdrop-filter: blur(16px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 18px;
+        }
+
+        .route-card p {
+            margin: 0;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+        }
+
+        .route-card strong {
+            color: white;
+        }
+
+        /* METADATA */
+        .metadata {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin: 35px 0 10px;
+        }
+
+        .meta-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 18px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+            transition: all 0.3s ease;
+            max-width: 100%;
+        }
+
+        .meta-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(37, 99, 235, 0.45);
+        }
+
+        .meta-item span {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        .meta-item strong {
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        /* SECTIONS */
+        section {
+            margin: 60px 0;
+            padding: 38px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
             opacity: 0;
             transform: translateY(20px);
             animation: slideUp 0.8s ease-out forwards;
+            max-width: 100%;
         }
-        section:nth-child(2) { animation-delay: 0.2s; }
-        section:nth-child(3) { animation-delay: 0.4s; }
-        section:nth-child(4) { animation-delay: 0.6s; }
+
+        section:nth-child(2) { animation-delay: 0.15s; }
+        section:nth-child(3) { animation-delay: 0.25s; }
+        section:nth-child(4) { animation-delay: 0.35s; }
 
         section h2 {
-            font-size: 2.2rem;
-            color: var(--primary);
-            margin-top: 0;
-            border-bottom: 2px solid rgba(12, 227, 232, 0.2);
-            padding-bottom: 10px;
-            display: inline-block;
+            font-size: clamp(1.7rem, 3vw, 2.4rem);
+            color: var(--text-main);
+            margin: 0 0 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        /* Grid */
+        section h2::before {
+            content: "📦";
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            border-radius: 14px;
+            background: rgba(37, 99, 235, 0.10);
+            display: grid;
+            place-items: center;
+            font-size: 1.3rem;
+        }
+
+        #fase1 h2::before { content: "🔎"; }
+        #fase2 h2::before { content: "🧩"; }
+        #fase3 h2::before { content: "✅"; }
+        #fase4 h2::before { content: "📋"; }
+        #fase5 h2::before { content: "🚚"; }
+
+        section h3 {
+            color: var(--primary-dark);
+            margin-top: 0;
+        }
+
+        p {
+            color: #334155;
+        }
+
+        ul {
+            padding-left: 22px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        code {
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary-dark);
+            padding: 2px 6px;
+            border-radius: 7px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* GRID */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-        
-        .card {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .card h3 {
-            color: var(--accent);
-            margin-top: 0;
+            gap: 26px;
         }
 
-        /* Code & Tables */
+        .card {
+            background: var(--bg-soft);
+            padding: 24px;
+            border-radius: 22px;
+            border: 1px solid var(--border);
+            max-width: 100%;
+        }
+
+        .card h3 {
+            color: var(--primary-dark);
+        }
+
+        /* CODE */
         pre {
-            background: #0d121c;
+            background: #101827;
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 18px;
             border: 1px solid #1e293b;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             overflow-x: auto;
-            color: var(--text-main);
+            color: #e2e8f0;
+            line-height: 1.7;
+            max-width: 100%;
         }
+
+        /* TABLE */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            background: white;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            min-width: 580px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
+
         th, td {
-            padding: 12px 15px;
+            padding: 13px 15px;
             text-align: left;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid var(--border);
         }
+
         th {
-            background: rgba(12, 227, 232, 0.1);
-            color: var(--primary);
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary-dark);
             text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
+            font-size: 0.76rem;
+            letter-spacing: 0.6px;
         }
+
         tr:hover {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(37, 99, 235, 0.04);
         }
 
-        /* Token Colors */
-        .t-kw { color: var(--token-keyword); font-weight: bold; }
-        .t-id { color: var(--token-id); }
-        .t-str { color: var(--token-string); }
-        .t-num { color: var(--token-number); }
-        .t-sym { color: var(--token-symbol); }
+        /* TOKENS */
+        .t-kw { color: #60a5fa; font-weight: bold; }
+        .t-id { color: #5eead4; }
+        .t-str { color: #86efac; }
+        .t-num { color: #fdba74; }
+        .t-sym { color: #cbd5e1; }
 
-        /* Badges */
+        /* BADGES */
         .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin: 3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 11px;
+            border-radius: 999px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            margin: 4px;
             font-family: 'JetBrains Mono', monospace;
         }
-        .bg-kw { background: rgba(201, 160, 255, 0.2); color: var(--accent); border: 1px solid var(--accent); }
-        .bg-id { background: rgba(153, 203, 255, 0.2); color: var(--secondary); border: 1px solid var(--secondary); }
-        .bg-str { background: rgba(255, 143, 171, 0.2); color: var(--token-string); border: 1px solid var(--token-string); }
-        .bg-num { background: rgba(56, 189, 248, 0.2); color: var(--token-number); border: 1px solid var(--token-number); }
-        .bg-sym { background: rgba(103, 232, 249, 0.2); color: var(--token-symbol); border: 1px solid var(--token-symbol); }
 
-        /* Animations */
+        .bg-kw {
+            background: rgba(37, 99, 235, 0.12);
+            color: var(--primary-dark);
+            border: 1px solid rgba(37, 99, 235, 0.30);
+        }
+
+        .bg-id {
+            background: rgba(15, 118, 110, 0.12);
+            color: var(--secondary);
+            border: 1px solid rgba(15, 118, 110, 0.30);
+        }
+
+        .bg-str {
+            background: rgba(22, 163, 74, 0.12);
+            color: var(--success);
+            border: 1px solid rgba(22, 163, 74, 0.30);
+        }
+
+        .bg-num {
+            background: rgba(249, 115, 22, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(249, 115, 22, 0.30);
+        }
+
+        .bg-sym {
+            background: rgba(100, 116, 139, 0.12);
+            color: var(--text-muted);
+            border: 1px solid rgba(100, 116, 139, 0.30);
+        }
+
+        .bg-danger {
+            background: rgba(220, 38, 38, 0.12);
+            color: var(--danger);
+            border: 1px solid rgba(220, 38, 38, 0.30);
+        }
+
+        /* ORDER STATUS */
+        .order-flow {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-top: 25px;
+        }
+
+        .flow-step {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 16px;
+            text-align: center;
+            position: relative;
+        }
+
+        .flow-step .emoji {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .flow-step strong {
+            display: block;
+            color: var(--text-main);
+        }
+
+        .flow-step span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* MERMAID */
+        .mermaid-box {
+            background: #101827;
+            padding: 22px;
+            border-radius: 20px;
+            border: 1px solid #1e293b;
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 70px;
+            padding: 28px;
+            text-align: center;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* ANIMATIONS */
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { 
+                opacity: 0; 
+                transform: translateY(15px); 
+            }
+
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
 
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(35px); 
+            }
+
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        @keyframes menuDown {
+            from {
+                opacity: 0;
+                transform: translateY(-12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* TABLET */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h2 {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .dashboard-preview {
+                margin: 0 auto;
+                width: 100%;
+                max-width: 680px;
+            }
+
+            .metadata {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .order-flow {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* CELULAR */
         @media (max-width: 768px) {
-            .grid-2 { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2.5rem; }
-            .metadata { flex-direction: column; gap: 20px; }
+            nav {
+                padding: 0;
+            }
+
+            .nav-content {
+                width: 100%;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 16px;
+            }
+
+            .logo {
+                font-size: 0.92rem;
+            }
+
+            .logo span {
+                width: 34px;
+                height: 34px;
+                border-radius: 11px;
+            }
+
+            .menu-toggle {
+                display: grid;
+                place-items: center;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 68px;
+                left: 16px;
+                right: 16px;
+                display: none;
+                flex-direction: column;
+                gap: 8px;
+                padding: 14px;
+                background: rgba(255, 255, 255, 0.98);
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                box-shadow: 0 18px 35px rgba(15, 23, 42, 0.16);
+                z-index: 999;
+            }
+
+            .nav-menu.active {
+                display: flex;
+                animation: menuDown 0.25s ease-out;
+            }
+
+            .nav-menu li {
+                width: 100%;
+                margin: 0;
+            }
+
+            .nav-menu a {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                padding: 12px;
+                border-radius: 14px;
+                background: rgba(37, 99, 235, 0.07);
+                color: var(--primary-dark);
+                font-size: 0.9rem;
+            }
+
+            .nav-menu a:hover {
+                background: rgba(37, 99, 235, 0.14);
+            }
+
+            .container {
+                padding: 95px 14px 35px;
+            }
+
+            .hero {
+                padding: 35px 0 20px;
+                gap: 24px;
+            }
+
+            .hero-text h1 {
+                font-size: 2.45rem;
+                line-height: 1.08;
+                letter-spacing: -1px;
+            }
+
+            .hero-text h2 {
+                font-size: 1rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .dashboard-preview {
+                padding: 18px;
+                border-radius: 22px;
+            }
+
+            .mini-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metadata {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            section {
+                padding: 22px 16px;
+                margin: 32px 0;
+                border-radius: 22px;
+            }
+
+            section h2 {
+                font-size: 1.55rem;
+                line-height: 1.2;
+            }
+
+            section h2::before {
+                width: 38px;
+                height: 38px;
+                min-width: 38px;
+                border-radius: 13px;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .card {
+                padding: 18px;
+                border-radius: 18px;
+            }
+
+            .order-flow {
+                grid-template-columns: 1fr;
+            }
+
+            pre {
+                font-size: 0.76rem;
+                padding: 14px;
+                border-radius: 14px;
+            }
+
+            table {
+                min-width: 560px;
+                font-size: 0.78rem;
+            }
+
+            th,
+            td {
+                padding: 10px 12px;
+            }
+
+            .badge {
+                font-size: 0.7rem;
+                padding: 5px 9px;
+            }
+
+            .mermaid-box {
+                padding: 14px;
+                overflow-x: auto;
+            }
+
+            footer {
+                font-size: 0.85rem;
+                padding: 20px 10px;
+            }
+        }
+
+        /* CELULARES PEQUEÑOS */
+        @media (max-width: 480px) {
+            .container {
+                padding-top: 90px;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .hero-text h2 {
+                font-size: 0.95rem;
+            }
+
+            .preview-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .mini-card strong {
+                font-size: 1.25rem;
+            }
+
+            section {
+                padding: 20px 14px;
+            }
+
+            section h2 {
+                font-size: 1.35rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+
+            .nav-menu {
+                top: 64px;
+                left: 12px;
+                right: 12px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <nav>
-        <ul>
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#intro">Introducción</a></li>
-            <li><a href="#lenguaje">El Lenguaje</a></li>
-            <li><a href="#fase1">Fase 1: Léxico</a></li>
-            <li><a href="#fase2">Fase 2: Sintáctico</a></li>
-            <li><a href="#fase3">Fase 3: Semántico</a></li>
-            <li><a href="#fase4">Fase 4: Símbolos</a></li>
-            <li><a href="#fase5">Fase 5: Resultado Final</a></li>
-        </ul>
+        <div class="nav-content">
+            <div class="logo">
+                <span>📦</span>
+                Gestor de Pedidos
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+                ☰
+            </button>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#intro">Introducción</a></li>
+                <li><a href="#lenguaje">Lenguaje</a></li>
+                <li><a href="#fase1">Léxico</a></li>
+                <li><a href="#fase2">Sintáctico</a></li>
+                <li><a href="#fase3">Semántico</a></li>
+                <li><a href="#fase4">Símbolos</a></li>
+                <li><a href="#fase5">Resultado</a></li>
+            </ul>
+        </div>
     </nav>
 
     <div class="container">
+
         <!-- PORTADA -->
         <header class="hero" id="inicio">
-            <h1>Compilador Pedidos</h1>
-            <h2>Proyecto de Ingeniería en Compiladores</h2>
-            
-            <div class="metadata">
-                <div class="meta-item">
-                    <span>Desarrolladores</span>
-                    <strong>Daniel Carrascosa<br>Kevin Castañon<br>Josue Barrios</strong>
+            <div class="hero-text">
+                <h1>Compilador para <span>Gestión de Pedidos</span></h1>
+                <h2>
+                    Portafolio técnico de un compilador orientado a pedidos, inventario,
+                    clientes, repartidores y flujo logístico de una empresa.
+                </h2>
+
+                <div class="hero-actions">
+                    <a href="#intro" class="btn btn-primary">📘 Ver proyecto</a>
+                    <a href="#fase5" class="btn btn-secondary">🚚 Resultado final</a>
                 </div>
-                <div class="meta-item">
-                    <span>Curso</span>
-                    <strong>Compiladores</strong>
+            </div>
+
+            <div class="dashboard-preview">
+                <div class="preview-header">
+                    <div class="preview-title">Panel del Sistema</div>
+                    <div class="status-pill">● Operativo</div>
                 </div>
-                <div class="meta-item">
-                    <span>Docente</span>
-                    <strong>Jorge Tello</strong>
+
+                <div class="mini-grid">
+                    <div class="mini-card">
+                        <div class="icon">🧾</div>
+                        <span>Pedidos analizados</span>
+                        <strong>128</strong>
+                    </div>
+
+                    <div class="mini-card">
+                        <div class="icon">📦</div>
+                        <span>Inventario validado</span>
+                        <strong>94%</strong>
+                    </div>
+
+                    <div class="mini-card">
+                        <div class="icon">🚚</div>
+                        <span>En ruta</span>
+                        <strong>23</strong>
+                    </div>
+
+                    <div class="mini-card">
+                        <div class="icon">⚠️</div>
+                        <span>Errores detectados</span>
+                        <strong>6</strong>
+                    </div>
                 </div>
-                <div class="meta-item">
-                    <span>Fecha</span>
-                    <strong>Abril 2026</strong>
+
+                <div class="route-card">
+                    <p><strong>Flujo activo:</strong> Pedido creado → Confirmado → Procesando → En ruta → Entregado</p>
                 </div>
             </div>
         </header>
 
+        <div class="metadata">
+            <div class="meta-item">
+                <span>Desarrolladores</span>
+                <strong>Daniel Carrascosa<br>Kevin Castañon<br>Josue Barrios</strong>
+            </div>
+
+            <div class="meta-item">
+                <span>Curso</span>
+                <strong>Compiladores</strong>
+            </div>
+
+            <div class="meta-item">
+                <span>Docente</span>
+                <strong>Jorge Tello</strong>
+            </div>
+
+            <div class="meta-item">
+                <span>Fecha</span>
+                <strong>Abril 2026</strong>
+            </div>
+        </div>
+
         <!-- INTRODUCCIÓN -->
         <section id="intro">
             <h2>Introducción</h2>
-            <p>El <strong>Compilador Pedidos</strong> es una herramienta diseñada para procesar un Lenguaje de Dominio Específico (DSL) enfocado en la gestión logística, inventario y control de pedidos de una empresa.</p>
-            <p>A diferencia de los lenguajes de propósito general (como Python o C++), este compilador interpreta instrucciones semánticas específicas del negocio, permitiendo automatizar flujos como la creación de pedidos, asignación de repartidores, verificación de stock y transiciones de estado (ej. <em>Pendiente → Procesando → En Ruta → Entregado</em>).</p>
-            <p>El propósito principal de este proyecto es demostrar la aplicación práctica de la teoría de autómatas y lenguajes formales en la construcción de un analizador estructurado en tres fases: <strong>Léxica, Sintáctica y Semántica</strong>.</p>
+
+            <p>
+                El <strong>Compilador Gestor de Pedidos</strong> es una herramienta diseñada
+                para procesar un lenguaje específico orientado a la administración de pedidos,
+                clientes, inventario, repartidores y estados de entrega.
+            </p>
+
+            <p>
+                A diferencia de un lenguaje de programación general, este compilador interpreta
+                instrucciones propias de un negocio. Por ejemplo: crear pedidos, asignar
+                repartidores, validar stock, confirmar entregas y verificar que el flujo
+                logístico tenga sentido.
+            </p>
+
+            <p>
+                El proyecto demuestra cómo se aplican las fases principales de un compilador:
+                análisis léxico, sintáctico y semántico, integradas en un entorno pensado como
+                un sistema real de gestión.
+            </p>
+
+            <div class="order-flow">
+                <div class="flow-step">
+                    <span class="emoji">📝</span>
+                    <strong>Creado</strong>
+                    <span>Registro inicial</span>
+                </div>
+
+                <div class="flow-step">
+                    <span class="emoji">✅</span>
+                    <strong>Confirmado</strong>
+                    <span>Pedido válido</span>
+                </div>
+
+                <div class="flow-step">
+                    <span class="emoji">📦</span>
+                    <strong>Procesando</strong>
+                    <span>Preparación</span>
+                </div>
+
+                <div class="flow-step">
+                    <span class="emoji">🚚</span>
+                    <strong>En ruta</strong>
+                    <span>Entrega activa</span>
+                </div>
+            </div>
         </section>
 
         <!-- DESCRIPCIÓN DEL LENGUAJE -->
         <section id="lenguaje">
             <h2>Descripción del Lenguaje</h2>
+
             <div class="grid-2">
                 <div>
                     <h3>¿Qué tipo de lenguaje es?</h3>
-                    <p>Es un lenguaje estructurado e imperativo diseñado para ser altamente legible por humanos, asemejándose a un pseudocódigo o a reglas de negocio redactadas en español.</p>
-                    
-                    <h3>Estructura de un Programa Válido</h3>
-                    <p>Un programa válido consiste en una secuencia de sentencias terminadas por punto y coma (<code>;</code>). Permite:</p>
+
+                    <p>
+                        Es un lenguaje estructurado e imperativo diseñado para ser legible por
+                        usuarios técnicos y no técnicos. Su sintaxis se parece a reglas de negocio
+                        escritas en español.
+                    </p>
+
+                    <h3>Estructura de un programa válido</h3>
+
+                    <p>
+                        Un programa válido contiene instrucciones terminadas por punto y coma
+                        <code>;</code>. Permite:
+                    </p>
+
                     <ul>
-                        <li><strong>Declaración de variables/propiedades:</strong> <code>Cliente: "Juan";</code></li>
-                        <li><strong>Acciones Compuestas:</strong> <code>Crear Pedido: P1;</code>, <code>Asignar Repartidor Juan: P1;</code></li>
-                        <li><strong>Cambios de Estado:</strong> <code>Confirmar P1;</code>, <code>Entregado P1;</code></li>
-                        <li><strong>Estructuras de Control:</strong> Condicionales <code>Si ... Sino ... Fin</code></li>
-                        <li><strong>Comentarios:</strong> <code>// Esto es un comentario</code></li>
+                        <li><strong>Registro de datos:</strong> <code>Cliente: "Juan";</code></li>
+                        <li><strong>Creación de pedidos:</strong> <code>Crear Pedido: P1;</code></li>
+                        <li><strong>Asignación logística:</strong> <code>Asignar Repartidor Carlos: P1;</code></li>
+                        <li><strong>Estados:</strong> <code>Confirmar P1;</code>, <code>EnRuta P1;</code></li>
+                        <li><strong>Condiciones:</strong> <code>Si ... Sino ... Fin</code></li>
+                        <li><strong>Comentarios:</strong> <code>// comentario</code></li>
                     </ul>
                 </div>
+
                 <div class="card">
-                    <h3>Ejemplo de Sintaxis</h3>
+                    <h3>Ejemplo de sintaxis</h3>
+
 <pre><code><span class="t-kw">Cliente</span><span class="t-sym">:</span> <span class="t-str">"Empresa ABC"</span><span class="t-sym">;</span>
 <span class="t-kw">Crear</span> <span class="t-kw">Pedido</span><span class="t-sym">:</span> <span class="t-id">Ped001</span><span class="t-sym">;</span>
 <span class="t-kw">Asignar</span> <span class="t-kw">Repartidor</span> <span class="t-id">Carlos</span><span class="t-sym">:</span> <span class="t-id">Ped001</span><span class="t-sym">;</span>
@@ -328,316 +1101,419 @@
             </div>
         </section>
 
-        <!-- FASE 1: LÉXICO -->
+        <!-- FASE 1 -->
         <section id="fase1">
             <h2>Fase 1: Analizador Léxico</h2>
-            <p>El analizador léxico es la primera fase del compilador. Su tarea es leer el código fuente carácter por carácter, ignorar espacios en blanco y comentarios, y agrupar los caracteres en unidades lógicas con significado llamadas <strong>tokens</strong>.</p>
-            
-            <h3>Categorías de Tokens Reconocidos</h3>
+
             <p>
-                <span class="badge bg-kw">Palabras Reservadas</span> (ej. Crear, Asignar, Pedido, Cliente, Si, Fin) <br>
-                <span class="badge bg-id">Identificadores</span> (Nombres definidos por el usuario que empiezan con letras y pueden contener números) <br>
-                <span class="badge bg-num">Números</span> (Enteros y Reales, ej. 10, 1500.50) <br>
-                <span class="badge bg-str">Cadenas de Texto</span> (Texto encerrado entre comillas dobles <code>"texto"</code>) <br>
-                <span class="badge bg-sym">Símbolos</span> (Operadores y delimitadores <code>:</code>, <code>;</code>, <code>(</code>, <code>)</code>, <code>$</code>, <code>%</code>)
+                El analizador léxico lee el código fuente carácter por carácter, ignora espacios
+                y comentarios, y agrupa los caracteres en unidades llamadas <strong>tokens</strong>.
             </p>
 
-            <h3>Manejo de Errores Léxicos</h3>
-            <p>Si el analizador encuentra un carácter o secuencia que no pertenece al alfabeto del lenguaje, genera un <strong>Error Léxico</strong>, pero continúa el análisis para reportar la mayor cantidad de errores posible. Ejemplos de errores: un identificador que comienza con número (<code>1Pedido</code>) o una cadena sin cerrar (<code>"Hola</code>).</p>
+            <h3>Categorías de tokens reconocidos</h3>
 
-            <div class="grid-2" style="margin-top: 40px;">
+            <p>
+                <span class="badge bg-kw">🔵 Palabras Reservadas</span>
+                <span class="badge bg-id">🟢 Identificadores</span>
+                <span class="badge bg-num">🟠 Números</span>
+                <span class="badge bg-str">🟩 Cadenas</span>
+                <span class="badge bg-sym">⚙️ Símbolos</span>
+            </p>
+
+            <h3>Manejo de errores léxicos</h3>
+
+            <p>
+                Si el analizador encuentra un carácter o secuencia que no pertenece al lenguaje,
+                genera un <strong>Error Léxico</strong>. Por ejemplo: un identificador que empieza
+                con número o una cadena de texto sin cerrar.
+            </p>
+
+            <div class="grid-2" style="margin-top: 35px;">
                 <div>
-                    <h3>Código de Entrada (Ejemplo)</h3>
+                    <h3>Código de entrada</h3>
+
 <pre><code><span class="t-sym">//</span> Registro de una orden
 <span class="t-kw">Cliente</span><span class="t-sym">:</span> <span class="t-str">"Maria Gomez"</span><span class="t-sym">;</span>
 <span class="t-kw">Crear</span> <span class="t-kw">Pedido</span><span class="t-sym">:</span> <span class="t-id">P1</span><span class="t-sym">;</span>
 <span class="t-id">1ErrorLexico</span><span class="t-sym">;</span></code></pre>
                 </div>
+
                 <div>
-                    <h3>Tabla de Tokens Resultante</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Lexema</th>
-                                <th>Tipo de Token</th>
-                                <th>Línea</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Cliente</td>
-                                <td><span class="t-kw">PALABRA_RESERVADA</span></td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>:</td>
-                                <td><span class="t-sym">SIMBOLO</span></td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>"Maria Gomez"</td>
-                                <td><span class="t-str">CADENA_TEXTO</span></td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>;</td>
-                                <td><span class="t-sym">SIMBOLO</span></td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>Crear</td>
-                                <td><span class="t-kw">PALABRA_RESERVADA</span></td>
-                                <td>3</td>
-                            </tr>
-                            <tr>
-                                <td>Pedido</td>
-                                <td><span class="t-kw">PALABRA_RESERVADA</span></td>
-                                <td>3</td>
-                            </tr>
-                            <tr>
-                                <td>:</td>
-                                <td><span class="t-sym">SIMBOLO</span></td>
-                                <td>3</td>
-                            </tr>
-                            <tr>
-                                <td>P1</td>
-                                <td><span class="t-id">IDENTIFICADOR</span></td>
-                                <td>3</td>
-                            </tr>
-                            <tr>
-                                <td>;</td>
-                                <td><span class="t-sym">SIMBOLO</span></td>
-                                <td>3</td>
-                            </tr>
-                            <tr>
-                                <td style="color: #ff6b6b">1ErrorLexico</td>
-                                <td style="color: #ff6b6b">ERROR_LEXICO</td>
-                                <td>4</td>
-                            </tr>
-                            <tr>
-                                <td>;</td>
-                                <td><span class="t-sym">SIMBOLO</span></td>
-                                <td>4</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <h3>Tabla de tokens</h3>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Lexema</th>
+                                    <th>Tipo</th>
+                                    <th>Línea</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>Cliente</td>
+                                    <td><span class="badge bg-kw">PALABRA_RESERVADA</span></td>
+                                    <td>2</td>
+                                </tr>
+
+                                <tr>
+                                    <td>:</td>
+                                    <td><span class="badge bg-sym">SIMBOLO</span></td>
+                                    <td>2</td>
+                                </tr>
+
+                                <tr>
+                                    <td>"Maria Gomez"</td>
+                                    <td><span class="badge bg-str">CADENA_TEXTO</span></td>
+                                    <td>2</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Crear</td>
+                                    <td><span class="badge bg-kw">PALABRA_RESERVADA</span></td>
+                                    <td>3</td>
+                                </tr>
+
+                                <tr>
+                                    <td>P1</td>
+                                    <td><span class="badge bg-id">IDENTIFICADOR</span></td>
+                                    <td>3</td>
+                                </tr>
+
+                                <tr>
+                                    <td>1ErrorLexico</td>
+                                    <td><span class="badge bg-danger">ERROR_LEXICO</span></td>
+                                    <td>4</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- FASE 2: SINTÁCTICO -->
+        <!-- FASE 2 -->
         <section id="fase2">
             <h2>Fase 2: Analizador Sintáctico</h2>
-            <p>La segunda fase, el análisis sintáctico (o parser), toma la lista de tokens generada por el analizador léxico y valida si estos siguen una secuencia lógica permitida, comprobando si cumplen con las reglas matemáticas llamadas <strong>gramáticas libres de contexto</strong>.</p>
-            <p>Si la estructura es válida, el analizador construye un <strong>Árbol de Sintaxis Abstracta (AST)</strong> que representa la jerarquía lógica de las instrucciones. Si encuentra una secuencia no válida, genera un <strong>Error Sintáctico</strong> y emplea una estrategia de recuperación (avanzar hasta encontrar un punto y coma <code>;</code>) para continuar analizando.</p>
+
+            <p>
+                El analizador sintáctico toma la lista de tokens y revisa si siguen una estructura
+                válida según la gramática del lenguaje.
+            </p>
+
+            <p>
+                Si la instrucción está bien formada, el compilador puede construir un
+                <strong>Árbol de Sintaxis Abstracta</strong>. Si no, genera un error sintáctico.
+            </p>
 
             <div class="grid-2">
                 <div>
-                    <h3>Reglas Gramaticales Principales</h3>
-<pre><code><span class="t-sym">PROGRAMA</span> &rarr; LISTA_SENTENCIAS
-<span class="t-sym">LISTA_SENTENCIAS</span> &rarr; SENTENCIA <span class="t-sym">;</span> LISTA_SENTENCIAS | &epsilon;
-<span class="t-sym">SENTENCIA</span> &rarr; DECLARACION_BASICA 
-            | ACCION_COMPUESTA 
-            | ACCION_ESTADO 
-            | ESTRUCTURA_CONDICIONAL
-<span class="t-sym">DECLARACION</span> &rarr; PALABRA_CLAVE <span class="t-sym">:</span> VALOR
-<span class="t-sym">ACCION_COMPUESTA</span> &rarr; <span class="t-kw">Crear</span> <span class="t-kw">Pedido</span> <span class="t-sym">:</span> ID
-<span class="t-sym">ESTADO</span> &rarr; <span class="t-kw">Confirmar</span> ID | <span class="t-kw">EnRuta</span> ID ...
-<span class="t-sym">CONDICIONAL</span> &rarr; <span class="t-kw">Si</span> COND <span class="t-sym">;</span> LISTA_SENT <span class="t-kw">Fin</span></code></pre>
+                    <h3>Reglas principales</h3>
+
+<pre><code><span class="t-sym">PROGRAMA</span> → LISTA_SENTENCIAS
+<span class="t-sym">LISTA_SENTENCIAS</span> → SENTENCIA ; LISTA_SENTENCIAS | ε
+<span class="t-sym">SENTENCIA</span> → DECLARACION
+            | ACCION_COMPUESTA
+            | ACCION_ESTADO
+            | CONDICIONAL
+
+<span class="t-sym">DECLARACION</span> → PALABRA_CLAVE : VALOR
+<span class="t-sym">ACCION_COMPUESTA</span> → Crear Pedido : ID
+<span class="t-sym">ESTADO</span> → Confirmar ID | EnRuta ID | Entregado ID
+<span class="t-sym">CONDICIONAL</span> → Si COND ; LISTA_SENT Fin</code></pre>
                 </div>
+
                 <div class="card">
-                    <h3>Ejemplos de Sintaxis</h3>
-                    <p style="color: #4ade80; margin-bottom: 5px;"><strong>✔ Código Válido</strong></p>
-<pre style="padding: 10px; margin-top: 0;"><code><span class="t-kw">Crear</span> <span class="t-kw">Pedido</span><span class="t-sym">:</span> <span class="t-id">P1</span><span class="t-sym">;</span></code></pre>
-                    <p style="color: #ff6b6b; margin-bottom: 5px; margin-top: 15px;"><strong>✖ Código Inválido (Falta punto y coma)</strong></p>
-<pre style="padding: 10px; margin-top: 0;"><code><span class="t-kw">Crear</span> <span class="t-kw">Pedido</span><span class="t-sym">:</span> <span class="t-id">P1</span></code></pre>
-                    <p style="color: #ff6b6b; margin-bottom: 5px; margin-top: 15px;"><strong>✖ Código Inválido (Orden incorrecto)</strong></p>
-<pre style="padding: 10px; margin-top: 0;"><code><span class="t-kw">Pedido</span> <span class="t-kw">Crear</span><span class="t-sym">:</span> <span class="t-id">P1</span><span class="t-sym">;</span></code></pre>
+                    <h3>Validación de sintaxis</h3>
+
+                    <p><span class="badge bg-str">✔ Código válido</span></p>
+
+<pre><code><span class="t-kw">Crear</span> <span class="t-kw">Pedido</span><span class="t-sym">:</span> <span class="t-id">P1</span><span class="t-sym">;</span></code></pre>
+
+                    <p><span class="badge bg-danger">✖ Falta punto y coma</span></p>
+
+<pre><code><span class="t-kw">Crear</span> <span class="t-kw">Pedido</span><span class="t-sym">:</span> <span class="t-id">P1</span></code></pre>
+
+                    <p><span class="badge bg-danger">✖ Orden incorrecto</span></p>
+
+<pre><code><span class="t-kw">Pedido</span> <span class="t-kw">Crear</span><span class="t-sym">:</span> <span class="t-id">P1</span><span class="t-sym">;</span></code></pre>
                 </div>
             </div>
 
-            <h3 style="margin-top: 40px;">Árbol de Sintaxis Abstracta (AST)</h3>
-            <p>Para el código válido: <code>Crear Pedido: P1; Confirmar P1;</code> el árbol generado sería el siguiente:</p>
-            <div class="mermaid" style="background: rgba(17, 25, 40, 0.9); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); text-align: center;">
-                graph TD
-                A[PROGRAMA] --> B[LISTA_SENTENCIAS]
-                B --> C[ACCION_COMPUESTA]
-                B --> D[ACCION_ESTADO]
-                
-                C --> C1(Crear)
-                C --> C2(Pedido)
-                C --> C3(:)
-                C --> C4((P1))
-                C --> C5(;)
-                
-                D --> D1(Confirmar)
-                D --> D2((P1))
-                D --> D3(;)
+            <h3 style="margin-top: 35px;">Árbol de Sintaxis Abstracta</h3>
 
-                style A fill:#071628,stroke:#99cbff,color:#ddeeff
-                style B fill:#071820,stroke:#67e8f9,color:#ddeeff
-                style C fill:#0e1f06,stroke:#86efac,color:#ddeeff
-                style D fill:#1e1400,stroke:#ffd166,color:#ddeeff
-                style C4 fill:#071830,stroke:#99cbff,color:#ddeeff
-                style D2 fill:#071830,stroke:#99cbff,color:#ddeeff
+            <p>
+                Para el código <code>Crear Pedido: P1; Confirmar P1;</code>, el árbol generado sería:
+            </p>
+
+            <div class="mermaid-box">
+                <div class="mermaid">
+                    graph TD
+                    A[PROGRAMA] --> B[LISTA_SENTENCIAS]
+                    B --> C[ACCION_COMPUESTA]
+                    B --> D[ACCION_ESTADO]
+
+                    C --> C1(Crear)
+                    C --> C2(Pedido)
+                    C --> C3(:)
+                    C --> C4((P1))
+                    C --> C5(;)
+
+                    D --> D1(Confirmar)
+                    D --> D2((P1))
+                    D --> D3(;)
+
+                    style A fill:#1e40af,stroke:#93c5fd,color:#ffffff
+                    style B fill:#0f766e,stroke:#5eead4,color:#ffffff
+                    style C fill:#f97316,stroke:#fed7aa,color:#ffffff
+                    style D fill:#16a34a,stroke:#bbf7d0,color:#ffffff
+                    style C4 fill:#172033,stroke:#ffffff,color:#ffffff
+                    style D2 fill:#172033,stroke:#ffffff,color:#ffffff
+                </div>
             </div>
         </section>
 
-        <!-- FASE 3: SEMÁNTICO -->
+        <!-- FASE 3 -->
         <section id="fase3">
             <h2>Fase 3: Analizador Semántico</h2>
-            <p>La tercera fase, el análisis semántico, se encarga de revisar la <strong>coherencia lógica</strong> del programa. Aunque una instrucción esté correctamente escrita (sintaxis válida), podría no tener sentido en el contexto del negocio. Este analizador usa una <strong>Tabla de Símbolos</strong> para rastrear y validar el estado de cada entidad a medida que lee el código.</p>
+
+            <p>
+                El análisis semántico revisa que las instrucciones tengan sentido dentro del
+                sistema de pedidos. Aunque una instrucción esté bien escrita, podría ser inválida
+                si rompe la lógica del negocio.
+            </p>
 
             <div class="grid-2">
                 <div>
-                    <h3>Reglas Lógicas Validadas</h3>
+                    <h3>Reglas lógicas validadas</h3>
+
                     <ul>
-                        <li><strong>Verificación de Existencia:</strong> No se puede asignar un repartidor, ni usar una condición, ni cambiar el estado a un <code>Pedido</code> que no ha sido creado o registrado previamente.</li>
-                        <li><strong>Compatibilidad de Tipos:</strong> Campos como <code>Cantidad</code>, <code>Precio</code>, <code>Impuesto</code> o <code>Total</code> requieren estrictamente un valor numérico (entero o real). Campos como <code>Cliente</code> o <code>Direccion</code> requieren texto o identificadores.</li>
-                        <li><strong>Unicidad:</strong> No se puede crear un <code>Pedido</code> con un identificador que ya existe en la Tabla de Símbolos, evitando duplicidades.</li>
-                        <li><strong>Transiciones de Estado:</strong> Implementa una máquina de estados finitos implícita para los pedidos. Por ejemplo, un pedido no puede pasar a estado <code>Entregado</code> si primero no está <code>EnRuta</code> o no puede <code>Facturarse</code> si ha sido <code>Cancelado</code>, garantizando el flujo logístico real de la empresa.</li>
+                        <li><strong>Existencia:</strong> no se puede modificar un pedido que no fue creado.</li>
+                        <li><strong>Tipos de dato:</strong> cantidad, precio y total deben ser numéricos.</li>
+                        <li><strong>Unicidad:</strong> no se puede crear dos veces el mismo pedido.</li>
+                        <li><strong>Estados:</strong> un pedido debe seguir un flujo lógico.</li>
+                        <li><strong>Recursos:</strong> repartidores o entidades deben estar registradas.</li>
                     </ul>
                 </div>
+
                 <div class="card">
-                    <h3>Tipos de Errores Semánticos (SEM)</h3>
-                    <p>El analizador reporta códigos de error específicos para facilitar la depuración:</p>
-                    <ul style="padding-left: 10px; list-style: none;">
-                        <li style="margin-bottom: 8px;"><span class="badge bg-str">SEM-01</span> <strong>Pedido no creado:</strong> Intento de referenciar un pedido inexistente.</li>
-                        <li style="margin-bottom: 8px;"><span class="badge bg-str">SEM-02</span> <strong>Pedido repetido:</strong> Intento de crear un pedido con un ID ya en uso.</li>
-                        <li style="margin-bottom: 8px;"><span class="badge bg-str">SEM-03</span> <strong>Tipo de dato incorrecto:</strong> Ej. asignar texto a un campo numérico.</li>
-                        <li style="margin-bottom: 8px;"><span class="badge bg-str">SEM-04</span> <strong>Entidad no registrada:</strong> Asignar un recurso (Repartidor/Empleado) que no existe.</li>
-                        <li style="margin-bottom: 8px;"><span class="badge bg-str">SEM-05</span> <strong>Identificador inválido:</strong> Uso de un identificador no definido en contextos fuera de pedidos.</li>
-                        <li style="margin-bottom: 8px;"><span class="badge bg-str">SEM-06</span> <strong>Secuencia de estado incorrecta:</strong> Transición logística no permitida en la máquina de estados.</li>
+                    <h3>Errores semánticos</h3>
+
+                    <ul style="padding-left: 0; list-style: none;">
+                        <li><span class="badge bg-danger">SEM-01</span> Pedido no creado</li>
+                        <li><span class="badge bg-danger">SEM-02</span> Pedido repetido</li>
+                        <li><span class="badge bg-danger">SEM-03</span> Tipo de dato incorrecto</li>
+                        <li><span class="badge bg-danger">SEM-04</span> Entidad no registrada</li>
+                        <li><span class="badge bg-danger">SEM-05</span> Identificador inválido</li>
+                        <li><span class="badge bg-danger">SEM-06</span> Estado incorrecto</li>
                     </ul>
                 </div>
             </div>
 
-            <div style="margin-top: 40px;">
-                <h3>Ejemplos de Lógica y Transiciones</h3>
+            <div style="margin-top: 35px;">
+                <h3>Ejemplos de lógica</h3>
+
                 <div class="grid-2">
-                    <div class="card" style="background: rgba(74, 222, 128, 0.05); border-color: rgba(74, 222, 128, 0.2);">
-                        <p style="color: #4ade80; margin-bottom: 5px; margin-top: 0;"><strong>✔ Flujo Logístico Válido</strong></p>
-<pre style="padding: 10px; margin-top: 0; background: rgba(0,0,0,0.3); border: none;"><code><span class="t-kw">Crear</span> <span class="t-kw">Pedido</span><span class="t-sym">:</span> <span class="t-id">P100</span><span class="t-sym">;</span>
+                    <div class="card" style="background: rgba(22, 163, 74, 0.08); border-color: rgba(22, 163, 74, 0.25);">
+                        <p><span class="badge bg-str">✔ Flujo válido</span></p>
+
+<pre><code><span class="t-kw">Crear</span> <span class="t-kw">Pedido</span><span class="t-sym">:</span> <span class="t-id">P100</span><span class="t-sym">;</span>
 <span class="t-kw">Confirmar</span> <span class="t-id">P100</span><span class="t-sym">;</span>
 <span class="t-kw">Procesando</span> <span class="t-id">P100</span><span class="t-sym">;</span>
 <span class="t-kw">EnRuta</span> <span class="t-id">P100</span><span class="t-sym">;</span></code></pre>
                     </div>
-                    <div class="card" style="background: rgba(255, 107, 107, 0.05); border-color: rgba(255, 107, 107, 0.2);">
-                        <p style="color: #ff6b6b; margin-bottom: 5px; margin-top: 0;"><strong>✖ Flujo Logístico Inválido (SEM-06)</strong></p>
-<pre style="padding: 10px; margin-top: 0; background: rgba(0,0,0,0.3); border: none;"><code><span class="t-kw">Crear</span> <span class="t-kw">Pedido</span><span class="t-sym">:</span> <span class="t-id">P200</span><span class="t-sym">;</span>
-<span class="t-sym">//</span> Error: P200 no puede pasar de Creado a Entregado
+
+                    <div class="card" style="background: rgba(220, 38, 38, 0.08); border-color: rgba(220, 38, 38, 0.25);">
+                        <p><span class="badge bg-danger">✖ Flujo inválido</span></p>
+
+<pre><code><span class="t-kw">Crear</span> <span class="t-kw">Pedido</span><span class="t-sym">:</span> <span class="t-id">P200</span><span class="t-sym">;</span>
+<span class="t-sym">//</span> Error: no puede pasar directo a Entregado
 <span class="t-kw">Entregado</span> <span class="t-id">P200</span><span class="t-sym">;</span></code></pre>
                     </div>
-                    <div class="card" style="background: rgba(255, 107, 107, 0.05); border-color: rgba(255, 107, 107, 0.2);">
-                        <p style="color: #ff6b6b; margin-bottom: 5px; margin-top: 0;"><strong>✖ Incompatibilidad de Tipos (SEM-03)</strong></p>
-<pre style="padding: 10px; margin-top: 0; background: rgba(0,0,0,0.3); border: none;"><code><span class="t-sym">//</span> Error: 'Cantidad' espera un valor numérico
+
+                    <div class="card" style="background: rgba(220, 38, 38, 0.08); border-color: rgba(220, 38, 38, 0.25);">
+                        <p><span class="badge bg-danger">✖ Tipo incorrecto</span></p>
+
+<pre><code><span class="t-sym">//</span> Cantidad espera un número
 <span class="t-kw">Cantidad</span><span class="t-sym">:</span> <span class="t-str">"Veinte"</span><span class="t-sym">;</span></code></pre>
                     </div>
-                    <div class="card" style="background: rgba(255, 107, 107, 0.05); border-color: rgba(255, 107, 107, 0.2);">
-                        <p style="color: #ff6b6b; margin-bottom: 5px; margin-top: 0;"><strong>✖ Variable no declarada (SEM-01)</strong></p>
-<pre style="padding: 10px; margin-top: 0; background: rgba(0,0,0,0.3); border: none;"><code><span class="t-sym">//</span> Error: El pedido 'P_Null' no ha sido creado
+
+                    <div class="card" style="background: rgba(220, 38, 38, 0.08); border-color: rgba(220, 38, 38, 0.25);">
+                        <p><span class="badge bg-danger">✖ Pedido no creado</span></p>
+
+<pre><code><span class="t-sym">//</span> Error: P_Null no existe
 <span class="t-kw">Asignar</span> <span class="t-kw">Repartidor</span> <span class="t-id">Juan</span><span class="t-sym">:</span> <span class="t-id">P_Null</span><span class="t-sym">;</span></code></pre>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- FASE 4: TABLA DE SÍMBOLOS -->
+        <!-- FASE 4 -->
         <section id="fase4">
             <h2>Fase 4: Tabla de Símbolos</h2>
-            <p>La Tabla de Símbolos es una estructura de datos central en el compilador. Su función es <strong>almacenar y administrar la información de los identificadores</strong> (como pedidos, variables y entidades) a medida que son descubiertos durante el análisis del código fuente.</p>
-            <p>Esta tabla permite al analizador semántico tener "memoria" del estado del programa, asegurando que las reglas del negocio se apliquen a entidades concretas y permitiendo a las demás fases saber qué variables ya existen.</p>
+
+            <p>
+                La tabla de símbolos almacena la información importante de los identificadores
+                encontrados durante el análisis. Funciona como la memoria del compilador.
+            </p>
 
             <div class="grid-2">
                 <div>
-                    <h3>¿Qué información almacena?</h3>
-                    <p>Por cada identificador único en el código, la tabla registra un objeto (<code>clase Simbolo</code>) con los siguientes atributos:</p>
+                    <h3>Información que almacena</h3>
+
                     <ul>
-                        <li><strong>Identificador:</strong> El nombre único de la variable o entidad (ej. <code>P100</code>, <code>Juan</code>, <code>Total</code>).</li>
-                        <li><strong>Clase:</strong> El rol que cumple dentro del contexto del negocio (ej. <code>Pedido</code>, <code>Dato</code>, <code>Cliente</code>).</li>
-                        <li><strong>Tipo de Dato:</strong> El tipo del valor subyacente (ej. <code>IDENTIFICADOR</code>, <code>NUMERO</code>, <code>NUMERO_REAL</code>).</li>
-                        <li><strong>Valor:</strong> El dato en bruto asignado a la variable (ej. <code>1500.5</code>, <code>P100</code>).</li>
-                        <li><strong>Estado:</strong> Mantiene el flujo de vida de la entidad. Para los pedidos, registra su estado logístico (ej. <code>Creado</code>, <code>Confirmado</code>, <code>EnRuta</code>).</li>
-                        <li><strong>Línea:</strong> La línea del código fuente donde el símbolo fue declarado o modificado por última vez.</li>
+                        <li><strong>Identificador:</strong> nombre del pedido o dato.</li>
+                        <li><strong>Clase:</strong> pedido, cliente, dato o recurso.</li>
+                        <li><strong>Tipo:</strong> identificador, número, cadena, etc.</li>
+                        <li><strong>Valor:</strong> contenido asignado.</li>
+                        <li><strong>Estado:</strong> estado logístico del pedido.</li>
+                        <li><strong>Línea:</strong> posición dentro del código fuente.</li>
                     </ul>
                 </div>
+
                 <div class="card">
-                    <h3>Código de Entrada (Ejemplo)</h3>
-<pre style="padding: 10px; margin-top: 0; margin-bottom: 20px;"><code><span class="t-kw">Cliente</span><span class="t-sym">:</span> <span class="t-str">"Maria Gomez"</span><span class="t-sym">;</span>
+                    <h3>Código de entrada</h3>
+
+<pre><code><span class="t-kw">Cliente</span><span class="t-sym">:</span> <span class="t-str">"Maria Gomez"</span><span class="t-sym">;</span>
 <span class="t-kw">Total</span><span class="t-sym">:</span> <span class="t-num">1500.50</span><span class="t-sym">;</span>
 <span class="t-kw">Crear</span> <span class="t-kw">Pedido</span><span class="t-sym">:</span> <span class="t-id">P1</span><span class="t-sym">;</span>
 <span class="t-kw">Confirmar</span> <span class="t-id">P1</span><span class="t-sym">;</span></code></pre>
-                    <h3>Representación de la Tabla de Símbolos</h3>
-                    <table style="font-size: 0.8rem; margin-top: 0;">
-                        <thead>
-                            <tr>
-                                <th>Identificador</th>
-                                <th>Clase</th>
-                                <th>Tipo</th>
-                                <th>Estado</th>
-                                <th>Línea</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Maria Gomez</td>
-                                <td>Cliente</td>
-                                <td>IDENTIFICADOR</td>
-                                <td>Registrado</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>Total</td>
-                                <td>Dato</td>
-                                <td>NUMERO_REAL</td>
-                                <td>Valido</td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>P1</td>
-                                <td>Pedido</td>
-                                <td>IDENTIFICADOR</td>
-                                <td>Confirmado</td>
-                                <td>4</td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
+            </div>
+
+            <h3 style="margin-top: 35px;">Representación de la tabla</h3>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Identificador</th>
+                            <th>Clase</th>
+                            <th>Tipo</th>
+                            <th>Estado</th>
+                            <th>Línea</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Maria Gomez</td>
+                            <td>Cliente</td>
+                            <td>CADENA</td>
+                            <td><span class="badge bg-str">Registrado</span></td>
+                            <td>1</td>
+                        </tr>
+
+                        <tr>
+                            <td>Total</td>
+                            <td>Dato</td>
+                            <td>NUMERO_REAL</td>
+                            <td><span class="badge bg-num">Validado</span></td>
+                            <td>2</td>
+                        </tr>
+
+                        <tr>
+                            <td>P1</td>
+                            <td>Pedido</td>
+                            <td>IDENTIFICADOR</td>
+                            <td><span class="badge bg-kw">Confirmado</span></td>
+                            <td>4</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
-        <!-- FASE 5: RESULTADO FINAL -->
+        <!-- FASE 5 -->
         <section id="fase5">
-            <h2>Fase 5: Resultado Final y Entorno de Análisis</h2>
-            <p>A diferencia de un compilador tradicional que genera un archivo ejecutable binario (como un <code>.exe</code> o un bytecode), el <strong>Compilador Pedidos</strong> funciona como un motor de análisis estático integrado dentro de un Entorno de Desarrollo (IDE) especializado.</p>
-            <p>El resultado final del compilador no es un nuevo archivo traducido, sino una <strong>evaluación estructurada y un reporte interactivo en tiempo real</strong> sobre el flujo de las reglas del negocio.</p>
+            <h2>Fase 5: Resultado Final</h2>
+
+            <p>
+                El resultado final no es un archivo ejecutable tradicional, sino un entorno de
+                análisis que funciona como un panel para validar reglas de negocio dentro de un
+                sistema gestor de pedidos.
+            </p>
 
             <div class="grid-2">
                 <div>
-                    <h3>Salidas que produce el Compilador</h3>
+                    <h3>Salidas que produce</h3>
+
                     <ul>
-                        <li><strong>Análisis en Vivo:</strong> El compilador evalúa el código mientras se escribe, proporcionando resaltado de sintaxis y subrayando los errores directamente en el código fuente.</li>
-                        <li><strong>Reporte Tabular de Fases:</strong> Genera matrices detalladas y accesibles que comprueban matemática y lógicamente el código (Tokens, Tabla de Errores, etc.).</li>
-                        <li><strong>Renderizado de Árbol Sintáctico:</strong> Produce una representación interactiva del flujo lógico, que puede ser visualizada gráficamente o exportada a un archivo <code>.html</code> independiente.</li>
-                        <li><strong>Memoria de Ejecución Simulada:</strong> La salida definitiva para el usuario de la empresa es la Tabla de Símbolos, donde se presenta el estado logístico real, actualizado y validado de todos los pedidos, indicando si los flujos fueron consistentes.</li>
+                        <li><strong>Tokens:</strong> clasificación del código fuente.</li>
+                        <li><strong>Errores:</strong> léxicos, sintácticos y semánticos.</li>
+                        <li><strong>Tabla de símbolos:</strong> memoria del sistema.</li>
+                        <li><strong>Estados:</strong> seguimiento del pedido.</li>
+                        <li><strong>Reporte visual:</strong> resultados organizados en tablas.</li>
                     </ul>
                 </div>
-                <div class="card" style="background: rgba(12, 227, 232, 0.05); border: 1px solid rgba(12, 227, 232, 0.2);">
-                    <h3 style="color: var(--primary);">El IDE del Compilador</h3>
-                    <p style="font-size: 0.9rem; margin-bottom: 15px;">La culminación técnica del proyecto es la interfaz gráfica construida en <code>PyQt6</code>, la cual centraliza todas las fases.</p>
-                    <ul style="font-size: 0.85rem; color: var(--text-main); list-style: square;">
-                        <li><strong>Editor Inteligente:</strong> Sistema de numeración de líneas, zoom adaptativo, atajos de teclado y sistema de diagnósticos con subrayados de colores para alertar de errores por fase.</li>
-                        <li><strong>Panel de Monitor:</strong> Un widget inferior multicapa que actúa como la consola de salida oficial, categorizando los resultados y facilitando la labor técnica de depurar las instrucciones de logística.</li>
+
+                <div class="card" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(15, 118, 110, 0.12));">
+                    <h3>IDE del Compilador</h3>
+
+                    <p>
+                        La interfaz puede integrarse en un entorno tipo dashboard, donde el usuario
+                        escribe instrucciones, ejecuta el análisis y revisa el estado de los pedidos.
+                    </p>
+
+                    <ul>
+                        <li>Editor de código del lenguaje de pedidos.</li>
+                        <li>Panel de tokens.</li>
+                        <li>Panel de errores.</li>
+                        <li>Tabla de símbolos.</li>
+                        <li>Estado logístico simulado.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
+        <footer>
+            📦 Compilador Gestor de Pedidos · Proyecto de Compiladores · Abril 2026
+        </footer>
+
     </div>
+
+    <script>
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.getElementById("navMenu");
+
+        menuToggle.addEventListener("click", () => {
+            navMenu.classList.toggle("active");
+
+            if (navMenu.classList.contains("active")) {
+                menuToggle.textContent = "✕";
+            } else {
+                menuToggle.textContent = "☰";
+            }
+        });
+
+        const navLinks = document.querySelectorAll(".nav-menu a");
+
+        navLinks.forEach(link => {
+            link.addEventListener("click", () => {
+                navMenu.classList.remove("active");
+                menuToggle.textContent = "☰";
+            });
+        });
+    </script>
 
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#2563eb',
+                primaryTextColor: '#ffffff',
+                primaryBorderColor: '#93c5fd',
+                lineColor: '#64748b',
+                secondaryColor: '#0f766e',
+                tertiaryColor: '#f97316'
+            }
+        });
     </script>
+
 </body>
 </html>
