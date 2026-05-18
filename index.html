@@ -6,6 +6,7 @@
     <title>Portafolio - Compilador Gestor de Pedidos</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
@@ -387,7 +388,9 @@
         }
 
         section h2::before {
-            content: "📦";
+            content: "\f466";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
             width: 42px;
             height: 42px;
             min-width: 42px;
@@ -398,13 +401,13 @@
             font-size: 1.3rem;
         }
 
-        #fase1 h2::before { content: "🔎"; }
-        #fase2 h2::before { content: "🧩"; }
-        #fase3 h2::before { content: "✅"; }
-        #fase4 h2::before { content: "📋"; }
-        #fase5 h2::before { content: "⚙️"; }
-        #fase6 h2::before { content: "💻"; }
-        #galeria h2::before { content: "🖼️"; }
+        #fase1 h2::before { content: "\f002"; }
+        #fase2 h2::before { content: "\f12e"; }
+        #fase3 h2::before { content: "\f058"; }
+        #fase4 h2::before { content: "\f46d"; }
+        #fase5 h2::before { content: "\f013"; }
+        #fase6 h2::before { content: "\f5fc"; }
+        #galeria h2::before { content: "\f03e"; }
 
         section h3 {
             color: var(--primary-dark);
@@ -900,7 +903,75 @@
                 right: 12px;
             }
         }
+
+        /* -- ESTILOS DINAMICOS AÑADIDOS -- */
+        body.dark-mode {
+            --bg-main: #0f172a;
+            --bg-soft: #1e293b;
+            --bg-card: #1e293b;
+            --bg-dark: #020617;
+            --primary: #3b82f6;
+            --primary-dark: #60a5fa;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode nav { background: rgba(30, 41, 59, 0.94); }
+        body.dark-mode .card, body.dark-mode section, body.dark-mode .meta-item, body.dark-mode .mini-card, body.dark-mode .flow-step, body.dark-mode .table-wrapper { background: var(--bg-card); border-color: var(--border); }
+        body.dark-mode table, body.dark-mode th { background: transparent; }
+        body.dark-mode th { color: var(--text-main); }
+        body.dark-mode .nav-menu { background: var(--bg-card); }
+        body.dark-mode p, body.dark-mode li { color: var(--text-muted); }
+        body.dark-mode table td { color: var(--text-muted); }
+        body.dark-mode code { background: rgba(255, 255, 255, 0.1); color: var(--primary-dark); }
+        body.dark-mode .nav-menu a { color: var(--text-muted); }
+        body.dark-mode .nav-menu a:hover { color: var(--primary); background: rgba(59, 130, 246, 0.1); }
+        body.dark-mode .logo { color: var(--primary-dark); }
+        
+        .theme-switch {
+            background: none; border: none; color: var(--text-muted);
+            font-size: 1.2rem; cursor: pointer; transition: color 0.3s;
+            padding: 8px; display: flex; align-items: center; justify-content: center;
+        }
+        .theme-switch:hover { color: var(--primary); }
+
+        .reveal {
+            opacity: 0; transform: translateY(40px);
+            transition: all 0.8s ease-out; will-change: opacity, transform;
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        section { animation: none !important; opacity: 1; transform: none; }
+
+        .lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px);
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .lightbox.active { opacity: 1; pointer-events: auto; }
+        .lightbox img {
+            max-width: 90%; max-height: 90%; border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .lightbox.active img { transform: scale(1); }
+        .lightbox-close {
+            position: absolute; top: 25px; right: 35px; color: white;
+            font-size: 2.5rem; cursor: pointer; background: none; border: none;
+            transition: color 0.3s;
+        }
+        .lightbox-close:hover { color: var(--accent); }
+        
+        #galeria img { cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+        #galeria img:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(37, 99, 235, 0.2); }
+
+        .tilt-card { transition: transform 0.1s; will-change: transform; }
+        /* -- FIN ESTILOS DINAMICOS -- */
     </style>
+
 </head>
 
 <body>
@@ -908,7 +979,7 @@
     <nav>
         <div class="nav-content">
             <div class="logo">
-                <span>📦</span>
+                <span><i class="fa-solid fa-box"></i></span>
                 Gestor de Pedidos
             </div>
 
@@ -927,6 +998,11 @@
                 <li><a href="#fase5">Intérprete</a></li>
                 <li><a href="#fase6">IDE</a></li>
                 <li><a href="#galeria">Galería</a></li>
+                <li style="display:flex; align-items:center;">
+                    <button class="theme-switch" id="themeSwitch" aria-label="Cambiar tema" style="margin-left: 10px;">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </li>
             </ul>
         </div>
     </nav>
@@ -956,25 +1032,25 @@
 
                 <div class="mini-grid">
                     <div class="mini-card">
-                        <div class="icon">🧾</div>
+                        <div class="icon"><i class="fa-solid fa-receipt"></i></div>
                         <span>Pedidos analizados</span>
                         <strong>128</strong>
                     </div>
 
                     <div class="mini-card">
-                        <div class="icon">📦</div>
+                        <div class="icon"><i class="fa-solid fa-box"></i></div>
                         <span>Inventario validado</span>
                         <strong>94%</strong>
                     </div>
 
                     <div class="mini-card">
-                        <div class="icon">🚚</div>
+                        <div class="icon"><i class="fa-solid fa-truck"></i></div>
                         <span>En ruta</span>
                         <strong>23</strong>
                     </div>
 
                     <div class="mini-card">
-                        <div class="icon">⚠️</div>
+                        <div class="icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
                         <span>Errores detectados</span>
                         <strong>6</strong>
                     </div>
@@ -1033,25 +1109,25 @@
 
             <div class="order-flow">
                 <div class="flow-step">
-                    <span class="emoji">📝</span>
+                    <span class="emoji"><i class="fa-solid fa-file-signature"></i></span>
                     <strong>Creado</strong>
                     <span>Registro inicial</span>
                 </div>
 
                 <div class="flow-step">
-                    <span class="emoji">✅</span>
+                    <span class="emoji"><i class="fa-solid fa-circle-check"></i></span>
                     <strong>Confirmado</strong>
                     <span>Pedido válido</span>
                 </div>
 
                 <div class="flow-step">
-                    <span class="emoji">📦</span>
+                    <span class="emoji"><i class="fa-solid fa-box"></i></span>
                     <strong>Procesando</strong>
                     <span>Preparación</span>
                 </div>
 
                 <div class="flow-step">
-                    <span class="emoji">🚚</span>
+                    <span class="emoji"><i class="fa-solid fa-truck"></i></span>
                     <strong>En ruta</strong>
                     <span>Entrega activa</span>
                 </div>
@@ -1449,7 +1525,7 @@
                     <h3>Automatizaciones del Intérprete</h3>
 
                     <ul>
-                        <li><strong>Control de Inventario:</strong> Deduce el stock al confirmar pedidos y lanza alertas <code>⚠️ [ALERTA DE STOCK]</code> si cae por debajo del nivel mínimo establecido.</li>
+                        <li><strong>Control de Inventario:</strong> Deduce el stock al confirmar pedidos y lanza alertas <code><i class="fa-solid fa-triangle-exclamation"></i> [ALERTA DE STOCK]</code> si cae por debajo del nivel mínimo establecido.</li>
                         <li><strong>Seguridad en Ruta:</strong> Bloquea intentos de despachar pedidos <code>EnRuta</code> si no cuentan con repartidor o dirección asignada.</li>
                         <li><strong>Ciclos de Ejecución:</strong> Procesa operaciones repetitivas con los ciclos <code>Mientras</code> y <code>Para</code>, limitando iteraciones infinitas por seguridad.</li>
                     </ul>
@@ -1551,9 +1627,14 @@
         </section>
 
         <footer>
-            📦 Compilador Gestor de Pedidos · Proyecto de Compiladores · Abril 2026
+            <i class="fa-solid fa-box"></i> Compilador Gestor de Pedidos · Proyecto de Compiladores · Abril 2026
         </footer>
 
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose"><i class="fa-solid fa-xmark"></i></button>
+        <img id="lightboxImg" src="" alt="Vista ampliada">
     </div>
 
     <script>
@@ -1578,6 +1659,114 @@
                 menuToggle.textContent = "☰";
             });
         });
+
+        // --- DINAMISMO Y ANIMACIONES ---
+        // 1. Dark Mode
+        const themeSwitch = document.getElementById('themeSwitch');
+        const body = document.body;
+        
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-mode');
+            if (themeSwitch) themeSwitch.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        }
+
+        if (themeSwitch) {
+            themeSwitch.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                    themeSwitch.innerHTML = '<i class="fa-solid fa-sun"></i>';
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    themeSwitch.innerHTML = '<i class="fa-solid fa-moon"></i>';
+                }
+            });
+        }
+
+        // 2. Scroll Reveal
+        const revealElements = document.querySelectorAll('section, .meta-item, .card, .flow-step');
+        revealElements.forEach(el => el.classList.add('reveal'));
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 3. Animación de Contadores
+        const counters = document.querySelectorAll('.mini-card strong');
+        let animationStarted = false;
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting && !animationStarted) {
+                animationStarted = true;
+                counters.forEach(counter => {
+                    const targetText = counter.innerText;
+                    const isPercentage = targetText.includes('%');
+                    const target = parseInt(targetText.replace(/\D/g, ''));
+                    if (isNaN(target)) return;
+                    
+                    let count = 0;
+                    const speed = target / 40; 
+                    
+                    const updateCount = () => {
+                        count += speed;
+                        if(count < target) {
+                            counter.innerText = Math.ceil(count) + (isPercentage ? '%' : '');
+                            requestAnimationFrame(updateCount);
+                        } else {
+                            counter.innerText = targetText;
+                        }
+                    };
+                    updateCount();
+                });
+            }
+        });
+        const miniGrid = document.querySelector('.mini-grid');
+        if(counters.length > 0 && miniGrid) counterObserver.observe(miniGrid);
+
+        // 4. Lightbox (Galería)
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const galleryImgs = document.querySelectorAll('#galeria img');
+
+        galleryImgs.forEach(img => {
+            img.addEventListener('click', () => {
+                if (lightboxImg) lightboxImg.src = img.src;
+                if (lightbox) lightbox.classList.add('active');
+            });
+        });
+
+        if(lightboxClose) lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
+        if(lightbox) lightbox.addEventListener('click', (e) => {
+            if(e.target === lightbox) lightbox.classList.remove('active');
+        });
+
+        // 5. Tilt Effect (Hover 3D) en Cards
+        const tiltCards = document.querySelectorAll('.card, .meta-item');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -5;
+                const rotateY = ((x - centerX) / centerX) * 5;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+            card.classList.add('tilt-card');
+        });
+        // --- FIN DINAMISMO ---
     </script>
 
     <script type="module">
