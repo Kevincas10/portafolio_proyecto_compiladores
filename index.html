@@ -402,7 +402,8 @@
         #fase2 h2::before { content: "🧩"; }
         #fase3 h2::before { content: "✅"; }
         #fase4 h2::before { content: "📋"; }
-        #fase5 h2::before { content: "🚚"; }
+        #fase5 h2::before { content: "⚙️"; }
+        #fase6 h2::before { content: "💻"; }
 
         section h3 {
             color: var(--primary-dark);
@@ -922,7 +923,8 @@
                 <li><a href="#fase2">Sintáctico</a></li>
                 <li><a href="#fase3">Semántico</a></li>
                 <li><a href="#fase4">Símbolos</a></li>
-                <li><a href="#fase5">Resultado</a></li>
+                <li><a href="#fase5">Intérprete</a></li>
+                <li><a href="#fase6">IDE</a></li>
             </ul>
         </div>
     </nav>
@@ -940,7 +942,7 @@
 
                 <div class="hero-actions">
                     <a href="#intro" class="btn btn-primary">📘 Ver proyecto</a>
-                    <a href="#fase5" class="btn btn-secondary">🚚 Resultado final</a>
+                    <a href="#fase6" class="btn btn-secondary">💻 Entorno IDE</a>
                 </div>
             </div>
 
@@ -1081,6 +1083,8 @@
                         <li><strong>Asignación logística:</strong> <code>Asignar Repartidor Carlos: P1;</code></li>
                         <li><strong>Estados:</strong> <code>Confirmar P1;</code>, <code>EnRuta P1;</code></li>
                         <li><strong>Condiciones:</strong> <code>Si ... Sino ... Fin</code></li>
+                        <li><strong>Ciclos:</strong> <code>Mientras ... Fin</code>, <code>Para ... Fin</code></li>
+                        <li><strong>Reportes:</strong> <code>Reporte: VALOR;</code></li>
                         <li><strong>Comentarios:</strong> <code>// comentario</code></li>
                     </ul>
                 </div>
@@ -1090,12 +1094,15 @@
 
 <pre><code><span class="t-kw">Cliente</span><span class="t-sym">:</span> <span class="t-str">"Empresa ABC"</span><span class="t-sym">;</span>
 <span class="t-kw">Crear</span> <span class="t-kw">Pedido</span><span class="t-sym">:</span> <span class="t-id">Ped001</span><span class="t-sym">;</span>
-<span class="t-kw">Asignar</span> <span class="t-kw">Repartidor</span> <span class="t-id">Carlos</span><span class="t-sym">:</span> <span class="t-id">Ped001</span><span class="t-sym">;</span>
 
-<span class="t-kw">Si</span> <span class="t-id">Total</span><span class="t-sym">:</span> <span class="t-num">1500.50</span><span class="t-sym">;</span>
+<span class="t-kw">Para</span> <span class="t-id">Item</span><span class="t-sym">:</span> <span class="t-num">1</span><span class="t-sym">;</span> <span class="t-num">3</span><span class="t-sym">;</span>
+    <span class="t-kw">Agregar</span> <span class="t-id">Ped001</span><span class="t-sym">:</span> <span class="t-str">"Hamburguesa"</span><span class="t-sym">,</span> <span class="t-num">2</span><span class="t-sym">,</span> <span class="t-num">45.00</span><span class="t-sym">;</span>
+<span class="t-kw">Fin</span>
+
+<span class="t-kw">Si</span> <span class="t-id">Stock</span><span class="t-sym">:</span> <span class="t-num">10</span><span class="t-sym">;</span>
     <span class="t-kw">Confirmar</span> <span class="t-id">Ped001</span><span class="t-sym">;</span>
 <span class="t-kw">Sino</span>
-    <span class="t-kw">Pendiente</span> <span class="t-id">Ped001</span><span class="t-sym">;</span>
+    <span class="t-kw">Reporte</span><span class="t-sym">:</span> <span class="t-str">"Stock insuficiente"</span><span class="t-sym">;</span>
 <span class="t-kw">Fin</span></code></pre>
                 </div>
             </div>
@@ -1214,15 +1221,15 @@
 
 <pre><code><span class="t-sym">PROGRAMA</span> → LISTA_SENTENCIAS
 <span class="t-sym">LISTA_SENTENCIAS</span> → SENTENCIA ; LISTA_SENTENCIAS | ε
-<span class="t-sym">SENTENCIA</span> → DECLARACION
-            | ACCION_COMPUESTA
-            | ACCION_ESTADO
-            | CONDICIONAL
+<span class="t-sym">SENTENCIA</span> → DECLARACION | COMPUESTA | ESTADO | CONDICIONAL | CICLO | REPORTE
 
 <span class="t-sym">DECLARACION</span> → PALABRA_CLAVE : VALOR
-<span class="t-sym">ACCION_COMPUESTA</span> → Crear Pedido : ID
+<span class="t-sym">COMPUESTA</span> → Crear Pedido : ID | Agregar ID : CADENA , NUM , NUM
 <span class="t-sym">ESTADO</span> → Confirmar ID | EnRuta ID | Entregado ID
-<span class="t-sym">CONDICIONAL</span> → Si COND ; LISTA_SENT Fin</code></pre>
+<span class="t-sym">CONDICIONAL</span> → Si COND ; LISTA_SENT [Sino LISTA_SENT] Fin
+<span class="t-sym">CICLO</span> → Mientras COND ; LISTA_SENT Fin
+        | Para ID : NUM ; NUM ; LISTA_SENT Fin
+<span class="t-sym">REPORTE</span> → Reporte : VALOR</code></pre>
                 </div>
 
                 <div class="card">
@@ -1293,8 +1300,9 @@
                         <li><strong>Existencia:</strong> no se puede modificar un pedido que no fue creado.</li>
                         <li><strong>Tipos de dato:</strong> cantidad, precio y total deben ser numéricos.</li>
                         <li><strong>Unicidad:</strong> no se puede crear dos veces el mismo pedido.</li>
-                        <li><strong>Estados:</strong> un pedido debe seguir un flujo lógico.</li>
-                        <li><strong>Recursos:</strong> repartidores o entidades deben estar registradas.</li>
+                        <li><strong>Estados:</strong> un pedido debe seguir la matriz de transición de negocio.</li>
+                        <li><strong>Recursos:</strong> repartidores o empleados deben estar registrados (SEM-04).</li>
+                        <li><strong>Variables:</strong> condiciones y variables de ciclos deben existir (SEM-05).</li>
                     </ul>
                 </div>
 
@@ -1428,41 +1436,66 @@
 
         <!-- FASE 5 -->
         <section id="fase5">
-            <h2>Fase 5: Resultado Final</h2>
+            <h2>Fase 5: Intérprete y Simulación Logística</h2>
 
             <p>
-                El resultado final no es un archivo ejecutable tradicional, sino un entorno de
-                análisis que funciona como un panel para validar reglas de negocio dentro de un
-                sistema gestor de pedidos.
+                El backend del compilador no solo valida código, sino que incluye un <strong>intérprete simulador</strong> que ejecuta las reglas de negocio en tiempo real. Actúa como el cerebro logístico de la empresa.
             </p>
 
             <div class="grid-2">
                 <div>
-                    <h3>Salidas que produce</h3>
+                    <h3>Automatizaciones del Intérprete</h3>
 
                     <ul>
-                        <li><strong>Tokens:</strong> clasificación del código fuente.</li>
-                        <li><strong>Errores:</strong> léxicos, sintácticos y semánticos.</li>
-                        <li><strong>Tabla de símbolos:</strong> memoria del sistema.</li>
-                        <li><strong>Estados:</strong> seguimiento del pedido.</li>
-                        <li><strong>Reporte visual:</strong> resultados organizados en tablas.</li>
+                        <li><strong>Control de Inventario:</strong> Deduce el stock al confirmar pedidos y lanza alertas <code>⚠️ [ALERTA DE STOCK]</code> si cae por debajo del nivel mínimo establecido.</li>
+                        <li><strong>Seguridad en Ruta:</strong> Bloquea intentos de despachar pedidos <code>EnRuta</code> si no cuentan con repartidor o dirección asignada.</li>
+                        <li><strong>Ciclos de Ejecución:</strong> Procesa operaciones repetitivas con los ciclos <code>Mientras</code> y <code>Para</code>, limitando iteraciones infinitas por seguridad.</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="background: rgba(249, 115, 22, 0.08); border-color: rgba(249, 115, 22, 0.25);">
+                    <h3>Documentos Generados</h3>
+                    <p>
+                        El sistema genera salidas formateadas listas para imprimir:
+                    </p>
+                    <ul>
+                        <li><strong>Comandas (Bodega/Cocina):</strong> Notas de preparación con detalles y descripciones.</li>
+                        <li><strong>Tickets de Compra:</strong> Facturas detalladas con cálculo automático de <code>Subtotal</code>, <code>Descuento</code>, <code>Impuesto</code> y <code>Total</code> a pagar.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- FASE 6 -->
+        <section id="fase6">
+            <h2>Fase 6: Entorno Gráfico (IDE)</h2>
+
+            <p>
+                El compilador cuenta con un <strong>Entorno de Desarrollo Integrado (IDE)</strong> propio, construido con PyQt6 y estilizado con una interfaz premium (temas Dark y Light).
+            </p>
+
+            <div class="grid-2">
+                <div>
+                    <h3>Componentes de la Interfaz</h3>
+
+                    <ul>
+                        <li><strong>Editor con Syntax Highlighting:</strong> Colorea palabras reservadas, números y strings en tiempo real usando Pygments.</li>
+                        <li><strong>Lienzo AST Interactivo:</strong> Dibuja el Árbol de Sintaxis Abstracta con nodos geométricos, conectores y zoom digital mediante <code>ArbolCanvas</code>.</li>
+                        <li><strong>Explorador de Símbolos:</strong> Muestra el estado en tiempo real de cada variable y pedido en memoria.</li>
+                        <li><strong>Consola Logística:</strong> Registra la ejecución paso a paso con emojis e indicadores visuales.</li>
                     </ul>
                 </div>
 
                 <div class="card" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(15, 118, 110, 0.12));">
-                    <h3>IDE del Compilador</h3>
+                    <h3>Widgets Logísticos</h3>
 
                     <p>
-                        La interfaz puede integrarse en un entorno tipo dashboard, donde el usuario
-                        escribe instrucciones, ejecuta el análisis y revisa el estado de los pedidos.
+                        Herramientas visuales diseñadas para el operador:
                     </p>
 
                     <ul>
-                        <li>Editor de código del lenguaje de pedidos.</li>
-                        <li>Panel de tokens.</li>
-                        <li>Panel de errores.</li>
-                        <li>Tabla de símbolos.</li>
-                        <li>Estado logístico simulado.</li>
+                        <li><strong>Delivery Tracker:</strong> Panel interactivo para rastrear el progreso de la entrega con validación por pasos.</li>
+                        <li><strong>Visor de PDF Térmico:</strong> Visualiza comandas y facturas en formato de rollo térmico (80mm) con opción directa de impresión y guardado PDF.</li>
                     </ul>
                 </div>
             </div>
